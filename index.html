@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>Jeu de Devinette</title>
+</head>
+<body>
+
+    <h1>Bienvenue dans le jeu de devinette !</h1>
+    <p>Choisis un nombre entre 1 et 100</p>
+
+    <input type="number" id="devine" min="1" max="100" placeholder="" required>
+    <button onclick="envoyer()">Envoyer</button>
+    <button onclick="rejouer()">Rejouer</button> <!-- Bouton Rejouer -->
+
+    <p id="message"></p>
+    <p>Historique : <span id="historique"></span></p>
+
+    <script>
+        // Fonction pour réinitialiser le jeu
+        function rejouer() {
+            location.reload(); // Recharge la page, réinitialisant ainsi tous les éléments
+        }
+
+        // Générer un nombre secret entre 1 et 100
+        let nombreSecret = Math.floor(Math.random() * 100) + 1;
+        let historique = [];
+
+        // Fonction appelée lorsqu'on clique sur le bouton "Deviner"
+        function envoyer() {
+            let devine = document.getElementById("devine").value;
+            let message = document.getElementById("message");
+            let historiqueElem = document.getElementById("historique");
+
+            // Vérifier si l'utilisateur a deviné correctement
+            if (devine < nombreSecret) {
+                message.textContent = "Le nombre est plus grand";
+                historique.push("Trop bas " + devine);
+            } else if (devine > nombreSecret) {
+                message.textContent = "Le nombre est plus petit";
+                historique.push("Trop haut " + devine);
+            } else {
+                message.textContent = `Bravo ! Tu as trouvé le nombre ${nombreSecret} !`;
+                // Réinitialiser le jeu après une victoire
+                nombreSecret = Math.floor(Math.random() * 100) + 1;
+                historique = [];  // Réinitialiser l'historique après une victoire
+            }
+
+            // Afficher l'historique des tentatives
+            historiqueElem.textContent = historique.join(', ');
+        }
+
+        // Capturer l'appui sur F1 et ouvrir la page d'assistance dans un nouvel onglet
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "F1") {
+                event.preventDefault();  // Empêcher l'ouverture de l'aide du navigateur
+                window.open("assistance.html", "_blank");  // Ouvrir la page d'assistance dans un nouvel onglet
+            }
+        });
+    </script>
+
+</body>
+</html>
